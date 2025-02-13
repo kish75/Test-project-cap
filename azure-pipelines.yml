@@ -1,19 +1,38 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+trigger: none
 
-trigger:
-- main
-
-pool:
+pool: 
  name: TF
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+stages:
+  - stage: Build
+    jobs:
+      - job: Buildjob
+        displayName: Terraform Build
+        steps:
+            - task: TerraformInstaller@1
+              inputs:
+                terraformVersion: 'latest'
+            - task: TerraformTaskV4@4
+              inputs:
+                provider: 'azurerm'
+                command: 'init'
+                backendServiceArm: 'Free Trial(ebf7697d-eeb4-42b2-93fb-0b0022b90ffa)'
+                backendAzureRmResourceGroupName: 'test01'
+                backendAzureRmStorageAccountName: 'tfadostorageaccount'
+                backendAzureRmContainerName: 'tfstate'
+                backendAzureRmKey: 'prod.terraform.tfstate'
+            - task: TerraformTaskV4@4
+              inputs:
+                provider: 'azurerm'
+                command: 'plan'
+                environmentServiceNameAzureRM: 'Free Trial(ebf7697d-eeb4-42b2-93fb-0b0022b90ffa)'
+            - task: TerraformTaskV4@4
+              inputs:
+                 provider: 'azurerm'
+                 command: 'apply'
+                 environmentServiceNameAzureRM: 'Free Trial(ebf7697d-eeb4-42b2-93fb-0b0022b90ffa)'
+            - task: TerraformTaskV4@4
+              inputs:
+                provider: 'azurerm'
+                command: 'output'
+                environmentServiceNameAzureRM: 'Free Trial(ebf7697d-eeb4-42b2-93fb-0b0022b90ffa)'
