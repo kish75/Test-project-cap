@@ -5,4 +5,4 @@ name = "var.vnetname"
     address_space = var.addresspace
     depends_on = [ azurerm_resource_group.Cap ]
   
-}*?
+}*/
