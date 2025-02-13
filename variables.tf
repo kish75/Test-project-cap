@@ -11,3 +11,19 @@ variable "rglocation" {
     description = "Name of the RG Location"
   
 }
+
+variable "vnetname" {
+ type = string
+    default = "test-cap-vnet"
+
+    description = "Vnet name"
+  
+}
+
+variable "addresspace" {
+
+    type= list(string)
+
+    default = ["10.0.0.0/16"]
+  
+}
