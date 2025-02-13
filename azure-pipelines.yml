@@ -1,0 +1,38 @@
+trigger: none
+
+pool: 
+ name: TF
+
+stages:
+  - stage: Build
+    jobs:
+      - job: Buildjob
+        displayName: Terraform Build
+        steps:
+            - task: TerraformInstaller@1
+              inputs:
+                terraformVersion: 'latest'
+            - task: TerraformTaskV4@4
+              inputs:
+                provider: 'azurerm'
+                command: 'init'
+                backendServiceArm: 'Free Trial(ebf7697d-eeb4-42b2-93fb-0b0022b90ffa)'
+                backendAzureRmResourceGroupName: 'test01'
+                backendAzureRmStorageAccountName: 'tfadostorageaccount'
+                backendAzureRmContainerName: 'tfstate'
+                backendAzureRmKey: 'prod.terraform.tfstate'
+            - task: TerraformTaskV4@4
+              inputs:
+                provider: 'azurerm'
+                command: 'plan'
+                environmentServiceNameAzureRM: 'Free Trial(ebf7697d-eeb4-42b2-93fb-0b0022b90ffa)'
+            - task: TerraformTaskV4@4
+              inputs:
+                 provider: 'azurerm'
+                 command: 'apply'
+                 environmentServiceNameAzureRM: 'Free Trial(ebf7697d-eeb4-42b2-93fb-0b0022b90ffa)'
+            - task: TerraformTaskV4@4
+              inputs:
+                provider: 'azurerm'
+                command: 'output'
+                environmentServiceNameAzureRM: 'Free Trial(ebf7697d-eeb4-42b2-93fb-0b0022b90ffa)'
