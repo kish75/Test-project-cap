@@ -10,9 +10,11 @@ stages:
         displayName: Terraform Build
         steps:
             - task: TerraformInstaller@1
+              displayName: TF install
               inputs:
                 terraformVersion: 'latest'
             - task: TerraformTaskV4@4
+              displayName: TF Init
               inputs:
                 provider: 'azurerm'
                 command: 'init'
@@ -22,16 +24,19 @@ stages:
                 backendAzureRmContainerName: 'tfstate'
                 backendAzureRmKey: 'prod.terraform.tfstate'
             - task: TerraformTaskV4@4
+              displayName: TF Plan
               inputs:
                 provider: 'azurerm'
                 command: 'plan'
                 environmentServiceNameAzureRM: 'Free Trial(ebf7697d-eeb4-42b2-93fb-0b0022b90ffa)'
             - task: TerraformTaskV4@4
+              displayName: TF apply
               inputs:
                  provider: 'azurerm'
                  command: 'apply'
                  environmentServiceNameAzureRM: 'Free Trial(ebf7697d-eeb4-42b2-93fb-0b0022b90ffa)'
             - task: TerraformTaskV4@4
+              displayName: TF show
               inputs:
                 provider: 'azurerm'
                 command: 'output'
