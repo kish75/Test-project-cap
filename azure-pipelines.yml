@@ -7,7 +7,7 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+ name: TF
 
 steps:
 - script: echo Hello, world!
